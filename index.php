@@ -1,3 +1,3 @@
 <?php
-  include_one("bouncing_ball.html");
+  include_once("bouncing_ball.html");
   ?>
