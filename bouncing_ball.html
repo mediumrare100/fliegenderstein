@@ -8,6 +8,7 @@
 //https://billmill.org/static/canvastutorial/paddle.html
 
 <body>
+    <p id="game"></p>
     <canvas id="MeinCanvas" width="600" height="600"></canvas>
     <script>
         //Als globale Variablen deklareiert um mit allen Functions darauf zugreifen zu können tolle komentaränderung
@@ -16,18 +17,42 @@
         var dx = 0.5;
         var dy = 1;
         var R = 10;
+        var padlx=10;
+        
         var context = MeinCanvas.getContext('2d');
         var WIDTH = MeinCanvas.width;
         var HEIGHT = MeinCanvas.height;
-
+        var padlheight=20;
+        var padly=HEIGHT-padlheight;
         function init() {
-            return setInterval(draw, 10);
+            document.addEventListener('keydown', function(event){
+                console.log(event);
+                console.log(event.key);
+                if(event.key == 'ArrowLeft' & padlx > 0){
+                    padlx = padlx - 5;
+                }
+                if(event.key == 'ArrowRight' & padlx + 150 < WIDTH){
+                    padlx = padlx + 5;
+                }
+                if(event.key == 'Enter'){
+                    timer = setInterval(draw, 5);
+
+                }
+            });
+        return setInterval(draw, 10);
         }
 
         function ball(x, y, r) {
-            context.fillStyle = "#A4AACC";
+            context.fillStyle = "#A400CC";
             context.beginPath();
             context.arc(x, y, r, 0, Math.PI * 2, true);
+            context.closePath();
+            context.fill();
+        }
+        function rect(padlx,padlyy) {
+            context.fillStyle = "red";
+            context.beginPath();
+            context.rect(padlx, padly, 150, 30);
             context.closePath();
             context.fill();
         }
@@ -39,6 +64,7 @@
         function draw() {
             clear();
             ball(x, y, 10);
+            rect(padlx,padly);
             if(x>WIDTH){
                 dx=-dx;
             }
@@ -51,9 +77,17 @@
             if(y<0){
                 dy=-dy;
             }
+            if(x<padlx+150 && x>padlx&& y>padly){
+                dy=-dy;
+            }
+            if(y>=HEIGHT){
+             document.getElementById("game").innerHTML="Game Over";    
+            }
             x=x+dx;
             y=y+dy;
         }
+        
+
 
         init();
     </script>
